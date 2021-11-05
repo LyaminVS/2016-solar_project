@@ -4,6 +4,13 @@
 from solar_objects import Star, Planet
 
 
+def float_float(num):
+    if "E" in num:
+        return float(num.split("E")[0]) * 10 ** float(num.split("E")[1])
+    else:
+        return float(num)
+
+
 def read_space_objects_data_from_file(input_filename):
     """Cчитывает данные о космических объектах из файла, создаёт сами объекты
     и вызывает создание их графических образов
@@ -48,6 +55,8 @@ def parse_star_parameters(line, star):
     **star** — объект звезды.
     """
     star.Star, star.R, star.color, star.m, star.x, star.y, star.Vx, star.Vy = line.split()
+    list_numbers = [star.R, star.m, star.x, star.y, star.Vx, star.Vy]
+    star.R, star.m, star.x, star.y, star.Vx, star.Vy = list(map(float_float, list_numbers))
 
 
 def parse_planet_parameters(line, planet):
@@ -65,7 +74,9 @@ def parse_planet_parameters(line, planet):
     **line** — строка с описание планеты.
     **planet** — объект планеты.
     """
-    planet.Star, planet.R, planet.color, planet.m, planet.x, planet.y, planet.Vx, planet.Vy = line.split()
+    planet.Planet, planet.R, planet.color, planet.m, planet.x, planet.y, planet.Vx, planet.Vy = line.split()
+    list_numbers = [planet.R, planet.m, planet.x, planet.y, planet.Vx, planet.Vy]
+    planet.R, planet.m, planet.x, planet.y, planet.Vx, planet.Vy = list(map(float_float, list_numbers))
 
 
 def write_space_objects_data_to_file(output_filename, space_objects):
