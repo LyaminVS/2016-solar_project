@@ -4,6 +4,15 @@
 from solar_objects import Star, Planet
 
 
+def back_to_str(num):
+    e = 0
+    while num >= 10:
+        num *= 0.1
+        e += 1
+    num = round(num, 3)
+    return str(num) + ("E" + str(e)) * int(e > 0)
+
+
 def float_float(num):
     if "E" in num:
         return float(num.split("E")[0]) * 10 ** float(num.split("E")[1])
@@ -90,9 +99,11 @@ def write_space_objects_data_to_file(output_filename, space_objects):
     **output_filename** — имя входного файла
     **space_objects** — список объектов планет и звёзд
     """
-    with open(output_filename, 'w') as out_file:
+    with open(output_filename, 'w+') as out_file:
         for obj in space_objects:
-            print(out_file, "%s %d %s %f" % ('1', 2, '3', 4.5))
+            out_file.write("%s %s %s %s %s %s %s %s\n" % (obj.type, back_to_str(obj.R), obj.color, back_to_str(obj.m),
+                                                         back_to_str(obj.x), back_to_str(obj.y), back_to_str(obj.Vx),
+                                                         back_to_str(obj.Vy)))
             # FIXME: should store real values
 
 
