@@ -23,10 +23,13 @@ class Params:
             Тип: float"""
 
         self.time_speed = None
+        """частота расчёта изменений в симуляции"""
 
         self.space = None
+        """Холст для рисования"""
 
         self.start_button = None
+        """кнопка запуска / остановки симуляции"""
 
         self.perform_execution = False
         """Флаг цикличности выполнения расчёта"""
