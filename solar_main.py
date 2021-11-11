@@ -89,11 +89,14 @@ def open_file_dialog():
     params.perform_execution = False
     for obj in params.space_objects:
         params.space.delete(obj.image)  # удаление старых изображений планет
+
+    # считывание и обработка данных из файла
     in_filename = askopenfilename(filetypes=(("Text file", ".txt"),))
     params.space_objects = read_space_objects_data_from_file(in_filename)
     max_distance = max([max(abs(obj.x), abs(obj.y)) for obj in params.space_objects])
     params.scale_factor = calculate_scale_factor(max_distance)
 
+    # изображение объектов
     for obj in params.space_objects:
         if obj.type == 'star':
 
