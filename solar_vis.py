@@ -15,20 +15,15 @@ window_width = 800
 window_height = 800
 """Высота окна"""
 
-scale_factor = None
-"""Масштабирование экранных координат по отношению к физическим.
-Тип: float
-Мера: количество пикселей на один метр."""
-
 
 def calculate_scale_factor(max_distance):
     """Вычисляет значение глобальной переменной **scale_factor** по данной характерной длине"""
-    global scale_factor
-    scale_factor = 0.4*min(window_height, window_width)/max_distance
+    scale_factor = 0.4 * min(window_height, window_width) / max_distance
     print('Scale factor:', scale_factor)
+    return scale_factor
 
 
-def scale_x(x):
+def scale_x(x, scale_factor):
     """Возвращает экранную **x** координату по **x** координате модели.
     Принимает вещественное число, возвращает целое число.
     В случае выхода **x** координаты за пределы экрана возвращает
@@ -42,7 +37,7 @@ def scale_x(x):
     return int(x*scale_factor) + window_width//2
 
 
-def scale_y(y):
+def scale_y(y, scale_factor):
     """Возвращает экранную **y** координату по **y** координате модели.
     Принимает вещественное число, возвращает целое число.
     В случае выхода **y** координаты за пределы экрана возвращает
@@ -57,7 +52,7 @@ def scale_y(y):
     return -int(y*scale_factor) + window_height//2
 
 
-def create_star_image(space, star):
+def create_star_image(space, star, scale_factor):
     """Создаёт отображаемый объект звезды.
 
     Параметры:
@@ -65,14 +60,14 @@ def create_star_image(space, star):
     **space** — холст для рисования.
     **star** — объект звезды.
     """
-
-    x = scale_x(star.x)
-    y = scale_y(star.y)
+    # print(scale_factor)
+    x = scale_x(star.x, scale_factor)
+    y = scale_y(star.y, scale_factor)
     r = star.R
     star.image = space.create_oval([x - r, y - r], [x + r, y + r], fill=star.color)
 
 
-def create_planet_image(space, planet):
+def create_planet_image(space, planet, scale_factor):
     """Создаёт отображаемый объект планеты.
 
     Параметры:
@@ -80,8 +75,8 @@ def create_planet_image(space, planet):
     **space** — холст для рисования.
     **planet** — объект планеты.
     """
-    x = scale_x(planet.x)
-    y = scale_y(planet.y)
+    x = scale_x(planet.x, scale_factor)
+    y = scale_y(planet.y, scale_factor)
     r = planet.R
     planet.image = space.create_oval([x - r, y - r], [x + r, y + r], fill=planet.color)
 
@@ -98,7 +93,7 @@ def update_system_name(space, system_name):
     space.create_text(30, 80, tag="header", text=system_name, font=header_font)
 
 
-def update_object_position(space, body):
+def update_object_position(space, body, scale_factor):
     """Перемещает отображаемый объект на холсте.
 
     Параметры:
@@ -106,8 +101,8 @@ def update_object_position(space, body):
     **space** — холст для рисования.
     **body** — тело, которое нужно переместить.
     """
-    x = scale_x(body.x)
-    y = scale_y(body.y)
+    x = scale_x(body.x, scale_factor)
+    y = scale_y(body.y, scale_factor)
     r = body.R
     if x + r < 0 or x - r > window_width or y + r < 0 or y - r > window_height:
         space.coords(body.image, window_width + r, window_height + r,
