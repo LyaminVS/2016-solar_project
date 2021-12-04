@@ -92,19 +92,20 @@ def open_file_dialog():
 
     # считывание и обработка данных из файла
     in_filename = askopenfilename(filetypes=(("Text file", ".txt"),))
-    params.space_objects = read_space_objects_data_from_file(in_filename)
-    max_distance = max([max(abs(obj.x), abs(obj.y)) for obj in params.space_objects])
-    params.scale_factor = calculate_scale_factor(max_distance)
+    if in_filename:
+        params.space_objects = read_space_objects_data_from_file(in_filename)
+        max_distance = max([max(abs(obj.x), abs(obj.y)) for obj in params.space_objects])
+        params.scale_factor = calculate_scale_factor(max_distance)
 
-    # изображение объектов
-    for obj in params.space_objects:
-        if obj.type == 'star':
+        # изображение объектов
+        for obj in params.space_objects:
+            if obj.type == 'star':
 
-            create_star_image(params.space, obj, params.scale_factor)
-        elif obj.type == 'planet':
-            create_planet_image(params.space, obj, params.scale_factor)
-        else:
-            raise AssertionError()
+                create_star_image(params.space, obj, params.scale_factor)
+            elif obj.type == 'planet':
+                create_planet_image(params.space, obj, params.scale_factor)
+            else:
+                raise AssertionError()
 
 
 def save_file_dialog():
@@ -113,7 +114,8 @@ def save_file_dialog():
     Считанные объекты сохраняются в глобальный список space_objects
     """
     out_filename = asksaveasfilename(filetypes=(("Text file", ".txt"),))
-    write_space_objects_data_to_file(out_filename, params.space_objects)
+    if out_filename:
+        write_space_objects_data_to_file(out_filename, params.space_objects)
 
 
 def main():
